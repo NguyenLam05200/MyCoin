@@ -1,0 +1,7 @@
+syntax = "proto3";
+package mycoin.mycoin;
+
+option go_package = "MyCoin/x/mycoin/types";
+
+// Msg defines the Msg service.
+service Msg {}

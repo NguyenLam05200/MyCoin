@@ -1,0 +1,12 @@
+syntax = "proto3";
+package mycoin.mycoin;
+
+import "gogoproto/gogo.proto";
+import "mycoin/mycoin/params.proto";
+
+option go_package = "MyCoin/x/mycoin/types";
+
+// GenesisState defines the mycoin module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+}
