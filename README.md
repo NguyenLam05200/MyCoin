@@ -5,6 +5,7 @@
 - Step 2: sudo mv ignite /usr/local/bin/
 <img width="562" alt="Screenshot 2023-04-15 at 19 32 57" src="https://user-images.githubusercontent.com/60528316/232223823-0deedee1-2bbf-46a1-b59a-adcdc0805f9c.png">
 
+## Start FE:  https://docs.ignite.com/clients/react
 
 # mycoin
 **mycoin** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).

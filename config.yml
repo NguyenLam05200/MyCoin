@@ -8,14 +8,21 @@ accounts:
   coins:
   - 10000token
   - 100000000stake
-client:
-  openapi:
-    path: docs/static/openapi.yml
+- name: TestAccountName
+  coins: [10000token, 100000000stake]
+  mnemonic: gossip blush rebuild virus term illness crew lounge peasant donate total label nominee enlist merge despair upon beyond weasel peasant token cliff diesel sound
 faucet:
   name: bob
   coins:
   - 5token
   - 100000stake
+client:
+  typescript:
+    path: ts-client
+  hooks:
+    path: react/src/hooks
+  openapi:
+    path: docs/static/openapi.yml
 validators:
 - name: alice
   bonded: 100000000stake
