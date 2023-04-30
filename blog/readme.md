@@ -1,14 +1,5 @@
-# Setup environments:
-## Install Go in https://go.dev/dl/ (go1.20.3.darwin-arm64.pkg for Macos)
-## Install Ignite CLI (in MacOS)
-- Step 1: curl https://get.ignite.com/cli | bash
-- Step 2: sudo mv ignite /usr/local/bin/
-<img width="562" alt="Screenshot 2023-04-15 at 19 32 57" src="https://user-images.githubusercontent.com/60528316/232223823-0deedee1-2bbf-46a1-b59a-adcdc0805f9c.png">
-
-## Start FE:  https://docs.ignite.com/clients/react
-
-# mycoin
-**mycoin** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
+# blog
+**blog** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
 
 ## Get started
 
@@ -48,9 +39,9 @@ After a draft release is created, make your final changes from the release page 
 To install the latest version of your blockchain node's binary, execute the following command on your machine:
 
 ```
-curl https://get.ignite.com/username/MyCoin@latest! | sudo bash
+curl https://get.ignite.com/username/blog@latest! | sudo bash
 ```
-`username/MyCoin` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
+`username/blog` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
 
 ## Learn more
 
@@ -58,4 +49,4 @@ curl https://get.ignite.com/username/MyCoin@latest! | sudo bash
 - [Tutorials](https://docs.ignite.com/guide)
 - [Ignite CLI docs](https://docs.ignite.com)
 - [Cosmos SDK docs](https://docs.cosmos.network)
-- [Developer Chat](https://discord  .gg/ignite)
+- [Developer Chat](https://discord.gg/ignite)
