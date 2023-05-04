@@ -4,3 +4,19 @@ release/
 .idea/
 .vscode/
 .DS_Store
+Wallet/be-wallet/dist
+Wallet/be-wallet/node_modules
+Wallet/be-wallet/.env
+Wallet/fe-wallet/.env
+Wallet/fe-wallet/node_modules
+Wallet/fe-wallet/build
+Wallet/fe-wallet/.next
+
+Wallet/fe-wallet/logs
+Wallet/fe-wallet/*.log
+Wallet/fe-wallet/npm-debug.log*
+
+# Runtime data
+Wallet/fe-wallet/pids
+Wallet/fe-wallet/*.pid
+Wallet/fe-wallet/*.seed

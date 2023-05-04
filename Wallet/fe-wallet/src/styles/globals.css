@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: #1e1e1e;
+  background-color: white;
+}
+
+/* .ant-form-item-label>label {
+  font-size: 18px;
+} */
