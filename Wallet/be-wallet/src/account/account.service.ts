@@ -15,7 +15,7 @@ export class AccountService {
     let mnemonic: string = "";
     while (isExist) {
       mnemonic = bip39.generateMnemonic();
-      isExist = !!(await this.accountModel.exists({ mnemonic: getHash(mnemonic) }))
+      isExist = !!(await this.accountModel.exists({ mnemonic: await getHash(mnemonic) }))
     }
     return mnemonic
   }

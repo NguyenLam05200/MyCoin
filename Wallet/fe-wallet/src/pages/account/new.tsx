@@ -3,12 +3,18 @@ import { Inter } from 'next/font/google'
 import { Button, Form, Input } from 'antd'
 import Logo from '@/components/Logo';
 import { LockOutlined } from '@ant-design/icons';
+import { useFetchApi } from '@/utils';
+import { API } from '@/apis';
 
 
 export default function NewAccount() {
     const onFinish = (value: object) => {
         console.log(value);
     };
+
+    const { data, loading, error } = useFetchApi(
+        { api: API.GENERATE_MNEMONIC }
+    );
 
     return (
         <main

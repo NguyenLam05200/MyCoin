@@ -12,8 +12,8 @@ export class AccountController {
   }
 
   @Get('generate')
-  generateMnemonic() {
-    return this.accountService.generateMnemonic();
+  async generateMnemonic() {
+    return await this.accountService.generateMnemonic();
   }
 
   @Get('create')
