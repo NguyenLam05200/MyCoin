@@ -18,6 +18,7 @@ export const fetchApi = async ({ api, method = "GET", params = {}, other = {} }:
         headers: {
             'X-RapidAPI-Key': 'your-rapidapi-key',
             'X-RapidAPI-Host': 'famous-quotes4.p.rapidapi.com',
+            Accept: 'application/json',
         },
         origin: '*',
         optionsSuccessStatus: 200,
@@ -30,16 +31,10 @@ export const fetchApi = async ({ api, method = "GET", params = {}, other = {} }:
         api = api + "?" + new URLSearchParams(params)
     }
 
-    const res = await fetch(
+    return fetch(
         `${baseUrl}/${api}`,
         init
     );
-
-    const data = await res.json();
-    console.log("____here: ", data);
-
-
-    return data
 }
 
 export const useFetchApi = ({ api = "", method = "GET", params = {}, successCallBack = () => { } }: useFetchApiDto, condition?: boolean, dependencies?: any) => {
@@ -59,12 +54,14 @@ export const useFetchApi = ({ api = "", method = "GET", params = {}, successCall
             (async () => {
                 try {
                     setLoading(true);
-                    const data = await fetchApi({ api, method, params, other: { signal } });
+                    const res = await fetchApi({ api, method, params, other: { signal } });
 
-                    if (data && data?.status === 200) {
-                        setData(data.data);
+                    if (!res.ok) {
+                        setData(null)
+                        setError('error')
                     } else {
-                        setData(null);
+                        const { data } = await res.json()
+                        setData(data);
                     }
                     successCallBack();
                 } catch (error) {

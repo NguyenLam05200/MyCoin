@@ -13,7 +13,7 @@ export class AccountController {
 
   @Get('generate')
   async generateMnemonic() {
-    return await this.accountService.generateMnemonic();
+    return { data: await this.accountService.generateMnemonic() }
   }
 
   @Get('create')
