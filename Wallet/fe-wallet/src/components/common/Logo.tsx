@@ -12,8 +12,9 @@ const Logo = ({ size, className }: ComponentProps) => {
             <Image
                 src="/assets/images/branch.png"
                 alt="Logo"
-                width={size ?? 300}
-                height={size ?? 300}
+                width={size || 300}
+                height={size || 300}
+                className='object-contain w-auto h-auto'
                 priority
             />
         </div>

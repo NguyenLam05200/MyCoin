@@ -14,11 +14,12 @@ interface Props {
     data: string | null;
     loading: boolean;
     setStep: Function;
+    setDataInfo: Function;
 }
 
-const NewAccountInfo = ({ data, loading, setStep }: Props) => {
+const NewAccountInfo = ({ data, loading, setStep, setDataInfo }: Props) => {
     const onFinish = (value: object) => {
-        console.log(value);
+        setDataInfo(value)
         setStep(STEP.confirm)
     };
 
@@ -38,7 +39,7 @@ const NewAccountInfo = ({ data, loading, setStep }: Props) => {
 
             <Form
                 initialValues={{ remember: false }}
-                autoComplete="off"
+                autoComplete="on"
                 name="form_item_path"
                 layout="vertical"
                 onFinish={onFinish} size='large'
@@ -65,7 +66,7 @@ const NewAccountInfo = ({ data, loading, setStep }: Props) => {
                     ]}
                     hasFeedback
                 >
-                    <Input.Password />
+                    <Input.Password autoComplete="on" />
                 </Form.Item>
 
                 <Form.Item
@@ -88,7 +89,7 @@ const NewAccountInfo = ({ data, loading, setStep }: Props) => {
                         }),
                     ]}
                 >
-                    <Input.Password />
+                    <Input.Password autoComplete="on" />
                 </Form.Item>
 
 

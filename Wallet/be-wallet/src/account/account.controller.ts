@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AccountService } from './account.service';
 
 @Controller('account')
@@ -13,16 +13,11 @@ export class AccountController {
 
   @Get('generate')
   async generateMnemonic() {
-    return { data: await this.accountService.generateMnemonic() }
+    return { statusCode: 200, data: await this.accountService.generateMnemonic() }
   }
 
-  @Get('create')
-  createNewAccount() {
-    const newAccount = {
-      mnemonic: "Temp"
-      , name: "Test name"
-      , password: "Test password"
-    }
-    return this.accountService.create(newAccount)
+  @Post('create')
+  async createPost(@Body() body: { account_name: string, password: string, mnemonic: string }) {
+    return { statusCode: 200, data: await this.accountService.create(body) }
   }
 }

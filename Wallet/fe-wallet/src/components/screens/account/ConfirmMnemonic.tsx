@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import { Button, Form, Input } from 'antd'
@@ -8,15 +8,28 @@ import { useFetchApi } from '@/utils';
 import { API } from '@/apis';
 import { useMemo, useState } from 'react';
 
-const tempMnemonic = "because defense voyage brick sad village pull distance famous sad habit siege"
 interface BrickType {
     id: number,
     word: string
 }
+interface Props {
+    mnemonic: string | "";
+    setCanSubmit: Function;
+}
 
-const ConfirmMnemonic = ({ mnemonic }: { mnemonic: string | null }) => {
-    const [listBrick, setListBrick] = useState<BrickType[]>(tempMnemonic.split(' ').map((word, i) => ({ id: i, word })))
+const ConfirmMnemonic = ({ mnemonic, setCanSubmit }: Props) => {
+    const [listBrick, setListBrick] = useState<BrickType[]>(mnemonic.split(' ').map((word, i) => ({ id: i, word })))
     const [listChooose, setListChooose] = useState<BrickType[]>([])
+
+    useEffect(() => {
+        const parseMnemonic = listChooose.reduce((result, prev) => `${result} ${prev.word}`, "").trim()
+
+        if (parseMnemonic === mnemonic) {
+            setCanSubmit(true)
+        } else {
+            setCanSubmit(false)
+        }
+    }, [listChooose])
 
     return (
         <div className='min-w-[350px] max-w-[500px]'>

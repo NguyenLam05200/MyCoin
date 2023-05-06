@@ -26,7 +26,7 @@ export const fetchApi = async ({ api, method = "GET", params = {}, other = {} }:
     }
 
     if (method === 'POST') {
-        init.body = params
+        init.body = JSON.stringify(params)
     } else if (method === "GET") {
         api = api + "?" + new URLSearchParams(params)
     }

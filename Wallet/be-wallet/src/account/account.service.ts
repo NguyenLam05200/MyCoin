@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Account } from 'src/schemas/account.schemas';
 import { Model } from 'mongoose';
@@ -15,14 +15,19 @@ export class AccountService {
     let mnemonic: string = "";
     while (isExist) {
       mnemonic = bip39.generateMnemonic();
-      isExist = !!(await this.accountModel.exists({ mnemonic: await getHash(mnemonic) }))
+      isExist = !!(await this.accountModel.exists({ mnemonic }))
     }
     return mnemonic
   }
 
 
-  async create(createAccountDto): Promise<Account> {
-    const createdCat = new this.accountModel(createAccountDto);
+  async create(input): Promise<Account> {
+    const { mnemonic, account_name: name, password } = input
+    const isExist = !!(await this.accountModel.exists({ mnemonic }))
+    if (isExist) throw new HttpException("This mnemonic is already exists!", 200)
+
+    const createdCat = new this.accountModel({ mnemonic, name, password: await getHash(password) });
+
     return createdCat.save();
   }
 }
