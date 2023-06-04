@@ -78,7 +78,7 @@ export class MycoinService {
   }
 
   async test() {
-    const client = await StargateClient.connect(rpc)
+    const client = await StargateClient.connect(rpcURL)
     console.log("With client, chain id:", await client.getChainId(), ", height:", await client.getHeight())
     console.log(
       "Alice balances:",
@@ -133,7 +133,7 @@ export class MycoinService {
     // const rpcEndpoint = "https://rpc.my_tendermint_rpc_node";
     const client = await SigningStargateClient.connectWithSigner(rpcURL, wallet);
 
-    const recipient = "cosmos1r4lq67p8y68eswy9r07jfswzvhsmtmzank5tvj";
+    const recipient = "cosmos1j79ycd89wve0qhvp5e2238e0ly4nscq7x4azz9";
     const amount = {
       denom: "token",
       amount: "1",

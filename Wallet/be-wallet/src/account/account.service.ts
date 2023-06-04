@@ -4,10 +4,22 @@ import { Account } from 'src/schemas/account.schemas';
 import { Model } from 'mongoose';
 import * as bip39 from 'bip39';
 import { decrypt, encrypt, getHash } from 'src/utils';
+import { compareHash } from 'src/utils';
+import { IndexedTx, SigningStargateClient, StargateClient } from "@cosmjs/stargate";
+import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
+
+const rpcURL = "http://0.0.0.0:26657";
 
 @Injectable()
 export class AccountService {
-  constructor(@InjectModel(Account.name) private accountModel: Model<Account>) { }
+  private client: StargateClient;
+  constructor(@InjectModel(Account.name) private accountModel: Model<Account>) {
+    this.init();
+  }
+
+  private async init() {
+    this.client = await StargateClient.connect(rpcURL);
+  }
 
 
   async generateMnemonic() {
@@ -28,6 +40,66 @@ export class AccountService {
     curAccount.name = name;
     curAccount.password = await getHash(password)
     await curAccount.save();
+    delete curAccount.password
     return curAccount
+  }
+
+  async login(input): Promise<any> {
+    const { account_name: name, password } = input
+    const curAccount = await this.accountModel.findOne({ name })
+
+    if (!curAccount || !compareHash(password, curAccount.password)) throw new HttpException("Invalid username or password!", 200)
+
+    delete curAccount.password
+
+    const balances = await this.client.getAllBalances(curAccount?.accounts[0]?.address)
+
+    console.log("___balances: ", balances);
+    return { ...curAccount['_doc'], balances }
+  }
+
+  async refetchUser(input): Promise<any> {
+    const { mnemonic } = input
+
+    const curAccount = await this.accountModel.findOne({ mnemonic })
+
+    delete curAccount.password
+
+    const balances = await this.client.getAllBalances(curAccount?.accounts[0]?.address)
+
+    return { ...curAccount['_doc'], balances }
+  }
+
+  async transfer(input): Promise<any> {
+    try {
+      const { mnemonic, token, network, amount, address: recipient } = input
+
+      const wallet = await DirectSecp256k1HdWallet.fromMnemonic(decrypt(mnemonic));
+      const [firstAccount] = await wallet.getAccounts();
+
+      // const rpcEndpoint = "https://rpc.my_tendermint_rpc_node";
+      const client = await SigningStargateClient.connectWithSigner(rpcURL, wallet);
+
+      const fee = {
+        amount: [
+          {
+            denom: "stake",
+            amount: "1",
+          },
+        ],
+        gas: "180000", // 180k
+      };
+      const memo = "Use your power wisely";
+
+      const result = await client.sendTokens(firstAccount.address, recipient, [{
+        denom: token.toLowerCase(),
+        amount: amount,
+      }], fee, memo);
+
+      return result;
+    } catch (error) {
+      console.log("____error: ", error);
+      throw new HttpException("Transfer failure!", 200)
+    }
   }
 }

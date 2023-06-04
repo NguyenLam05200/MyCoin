@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Param, Controller, Get, Post, Query } from '@nestjs/common';
 import { AccountService } from './account.service';
 
 @Controller('account')
@@ -19,5 +19,20 @@ export class AccountController {
   @Post('create')
   async createPost(@Body() body: { account_name: string, password: string, mnemonic: string }) {
     return { statusCode: 200, data: await this.accountService.create(body) }
+  }
+
+  @Post('login')
+  async login(@Body() body: { account_name: string, password: string }) {
+    return { statusCode: 200, data: await this.accountService.login(body) }
+  }
+
+  @Post('transfer')
+  async transfer(@Body() body: { token: string, network: string, amount: number, address: string }) {
+    return { statusCode: 200, data: await this.accountService.transfer(body) }
+  }
+
+  @Get('refetch-user')
+  async refetchUser(@Query() query: { mnemonic: string }) {
+    return { statusCode: 200, data: await this.accountService.refetchUser(query) }
   }
 }

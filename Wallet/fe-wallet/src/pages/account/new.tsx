@@ -4,11 +4,17 @@ import ConfirmMnemonic from '@/components/screens/account/ConfirmMnemonic';
 import NewAccountInfo from '@/components/screens/account/NewAccount';
 import { STEP } from '@/constant';
 import FetchApi from '@/fetchApi';
+import { selectAuthState, setAuthState } from '@/redux/authSlice';
 import { fetchApi, useFetchApi } from '@/utils';
 import { Button, notification } from 'antd';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function NewAccount() {
+    const router = useRouter()
+    const dispatch = useDispatch();
+
 
     const [step, setStep] = useState(STEP.infor)
     const { data: mnemonic, loading: loadingGenerateMnemonic } = useFetchApi(
@@ -37,6 +43,8 @@ export default function NewAccount() {
 
             if (res?.data) {
                 console.log("ok");
+                dispatch(setAuthState(res.data))
+                router.push('/home')
             } else {
                 notification.error({
                     message: 'Error',

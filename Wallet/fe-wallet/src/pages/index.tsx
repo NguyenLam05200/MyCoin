@@ -23,6 +23,7 @@ export default function Home() {
       </div>
       <div className='mt-10 flex flex-col gap-y-4 items-center min-w-[400px] m-auto'>
         <Button
+          onClick={() => router.push("/account/login")}
           className='duration-150 rounded-lg text-lg w-full text-blue-2 border-blue-2 hover:text-white hover:bg-blue-2 size-lg h-[50px]'>Sign in</Button>
         <Button
           onClick={() => router.push("/account/new")}

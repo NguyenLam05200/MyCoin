@@ -8,6 +8,9 @@ accounts:
   coins:
   - 10000token
   - 100000000stake
+- name: Owner
+  coins: [100000000token, 10000000000stake]
+  mnemonic: gossip blush rebuild virus term illness crew lounge peasant donate total label nominee enlist merge despair upon beyond weasel peasant token cliff diesel sound
 - name: mock_1
   coins: ["0token","0stake"]
   mnemonic: steel odor wrap fiber help click drama fault uncover title address laugh ozone winter glow person real broken between farm smile wolf human elite
