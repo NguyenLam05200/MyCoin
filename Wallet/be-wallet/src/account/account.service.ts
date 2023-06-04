@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Account } from 'src/schemas/account.schemas';
 import { Model } from 'mongoose';
 import * as bip39 from 'bip39';
-import { getHash } from 'src/utils';
+import { decrypt, encrypt, getHash } from 'src/utils';
 
 @Injectable()
 export class AccountService {
@@ -11,23 +11,23 @@ export class AccountService {
 
 
   async generateMnemonic() {
-    let isExist: boolean = true;
-    let mnemonic: string = "";
-    while (isExist) {
-      mnemonic = bip39.generateMnemonic();
-      isExist = !!(await this.accountModel.exists({ mnemonic }))
+    try {
+      const randomAccount = await this.accountModel.aggregate([{ $match: { password: null } }, { $sample: { size: 1 } }]).exec();
+      const mnemonic = decrypt(randomAccount[0].mnemonic)
+      return mnemonic
+    } catch (error) {
+      throw new HttpException("MyCoin block chain is Full, please contact admin!", 200)
     }
-    return mnemonic
   }
-
 
   async create(input): Promise<Account> {
     const { mnemonic, account_name: name, password } = input
-    const isExist = !!(await this.accountModel.exists({ mnemonic }))
-    if (isExist) throw new HttpException("This mnemonic is already exists!", 200)
+    const curAccount = await this.accountModel.findOne({ mnemonic: encrypt(mnemonic), password: null })
+    if (!curAccount) throw new HttpException("Invalid mnemonic!", 200)
 
-    const createdCat = new this.accountModel({ mnemonic, name, password: await getHash(password) });
-
-    return createdCat.save();
+    curAccount.name = name;
+    curAccount.password = await getHash(password)
+    await curAccount.save();
+    return curAccount
   }
 }

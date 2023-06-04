@@ -1,3 +1,4 @@
+import { AccountData, Algo } from '@cosmjs/amino';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
@@ -9,9 +10,12 @@ export class Account {
     mnemonic: string;
 
     @Prop({ required: true })
+    accounts: AccountData[]
+
+    @Prop({ required: false })
     name: string;
 
-    @Prop({ required: true })
+    @Prop({ required: false })
     password: string;
 }
 

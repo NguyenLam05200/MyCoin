@@ -1,13 +1,3 @@
-version: 1
-accounts:
-- name: alice
-  coins:
-  - 20000token
-  - 200000000stake
-- name: bob
-  coins:
-  - 10000token
-  - 100000000stake
 - name: mock_1
   coins: ["0token","0stake"]
   mnemonic: steel odor wrap fiber help click drama fault uncover title address laugh ozone winter glow person real broken between farm smile wolf human elite
@@ -308,18 +298,3 @@ accounts:
 - name: mock_100
   coins: ["0token","0stake"]
   mnemonic: oyster idea moon walnut sting ten replace attitude borrow coach fever type toilet health hazard prize test below tackle drop harsh actress admit hollow
-faucet:
-  name: bob
-  coins:
-  - 5token
-  - 100000stake
-client:
-  typescript:
-    path: ts-client
-  hooks:
-    path: react/src/hooks
-  openapi:
-    path: docs/static/openapi.yml
-validators:
-- name: alice
-  bonded: 100000000stake
