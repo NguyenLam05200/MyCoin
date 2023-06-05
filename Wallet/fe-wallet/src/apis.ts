@@ -3,5 +3,6 @@ export const API = {
     CREATE_ACCOUNT: 'account/create',
     LOGIN: 'account/login',
     TRANSFER: 'account/transfer',
+    FAUCET: 'account/faucet',
     REFETCH_USER: 'account/refetch-user'
 }

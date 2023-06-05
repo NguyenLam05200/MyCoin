@@ -7,8 +7,11 @@ import { decrypt, encrypt, getHash } from 'src/utils';
 import { compareHash } from 'src/utils';
 import { IndexedTx, SigningStargateClient, StargateClient } from "@cosmjs/stargate";
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
+import fetch from 'node-fetch'
 
 const rpcURL = "http://0.0.0.0:26657";
+const faucetUrl = 'http://0.0.0.0:4500'
+
 
 @Injectable()
 export class AccountService {
@@ -100,6 +103,35 @@ export class AccountService {
     } catch (error) {
       console.log("____error: ", error);
       throw new HttpException("Transfer failure!", 200)
+    }
+  }
+
+  async faucet(input: { token: string, amount: number, address: string }) {
+    const { token, amount, address } = input
+
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
+
+    const data = {
+      address,
+      coins: [`${amount}${token}`]
+    };
+
+    try {
+      const response = await fetch(faucetUrl, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      console.log("____result: ", result);
+
+      return result || true
+    } catch (error) {
+      console.error(error);
+      throw new HttpException("Faucet failure!", 200)
     }
   }
 }

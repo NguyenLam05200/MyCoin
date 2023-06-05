@@ -1,9 +1,18 @@
+# Video demo: https://www.youtube.com/watch?v=imsdAYcVBvg&ab_channel=l%C3%A2mnguy%E1%BB%85n 
 # Setup environments:
 ## Install Go in https://go.dev/dl/ (go1.20.3.darwin-arm64.pkg for Macos)
 ## Install Ignite CLI (in MacOS)
 - Step 1: curl https://get.ignite.com/cli | bash
 - Step 2: sudo mv ignite /usr/local/bin/
 <img width="562" alt="Screenshot 2023-04-15 at 19 32 57" src="https://user-images.githubusercontent.com/60528316/232223823-0deedee1-2bbf-46a1-b59a-adcdc0805f9c.png">
+
+## Install GO
+## Run Wallet back-end and front-end:
+- cd Wallet/be && yarn dev
+- cd Wallet/fe && yarn dev
+Back-end now start on http://localhost:3245
+Front-end now start on http://localhost:3000
+
 
 ## Start FE:  https://docs.ignite.com/clients/react
 

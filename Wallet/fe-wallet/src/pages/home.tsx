@@ -68,6 +68,7 @@ const Home = () => {
     const [amount, setAmount] = React.useState('');
     const [address, setAddress] = React.useState('');
     const [loadingTransfer, setLoadingTransfer] = React.useState(false);
+    const [loadingFaucet, setLoadingFaucet] = React.useState(false);
 
     const refetchAccount = async () => {
         const res = await fetchApi({
@@ -94,7 +95,6 @@ const Home = () => {
     }
 
     const handleTransfer = async () => {
-
         setLoadingTransfer(true)
         try {
             const res = await fetchApi({
@@ -125,9 +125,50 @@ const Home = () => {
             }
 
         } catch (error) {
-
+            notification.error({
+                message: 'Error',
+                description: "Exception: " + error
+            });
         } finally {
             setLoadingTransfer(false)
+        }
+    }
+
+    const handleFaucet = async () => {
+        setLoadingFaucet(true)
+        try {
+            const res = await fetchApi({
+                url: API.FAUCET,
+                options: {
+                    method: 'POST',
+                },
+                params: {
+                    token,
+                    amount,
+                    address: authState?.accounts?.[0]?.address,
+                },
+            })
+
+            console.log("response: ", res);
+
+            if (res?.data) {
+                console.log("ok");
+
+                await refetchAccount();
+            } else {
+                notification.error({
+                    message: 'Error',
+                    description: res.message
+                });
+            }
+
+        } catch (error) {
+            notification.error({
+                message: 'Error',
+                description: "Exception: " + error
+            });
+        } finally {
+            setLoadingFaucet(false)
         }
     }
 
@@ -191,7 +232,7 @@ const Home = () => {
                                     setToken(event.target.value as string);
                                 }}
                             >
-                                <MenuItem value={"Token"}>Token</MenuItem>
+                                <MenuItem value={"token"}>Token</MenuItem>
                                 {/* <MenuItem value={20}>Twenty</MenuItem>
                                 <MenuItem value={30}>Thirty</MenuItem> */}
                             </Select>
@@ -219,6 +260,7 @@ const Home = () => {
                             {(token && network) ? <div>{1} stake</div> : <div>__</div>}
                         </div>
                         <ButtonV2
+                            loading={loadingTransfer}
                             onClick={handleTransfer}
                             disabled={!token || !network || !amount || !address} >
                             Transfer
@@ -238,7 +280,7 @@ const Home = () => {
                                     setToken(event.target.value as string);
                                 }}
                             >
-                                <MenuItem value={"Token"}>Token</MenuItem>
+                                <MenuItem value={"token"}>Token</MenuItem>
                                 <MenuItem value={"BNB"}>BNB</MenuItem>
                                 <MenuItem value={"BTC"}>BTC</MenuItem>
                             </Select>
@@ -261,16 +303,55 @@ const Home = () => {
                         </FormControl>
                         <h1>Address</h1>
                         {
-                            token === 'Token' && network === 'MyCoin' ?
+                            token === 'token' && network === 'MyCoin' ?
                                 <div className='text-base font-semibold'>{authState?.accounts[0].address}</div>
                                 :
-                                <Button variant='contained' className='!w-auto !px-8 text-sm'>
+                                <Button variant='contained' className='!w-auto !px-8 text-sm bg-blue'>
                                     Reveal address
                                 </Button>
                         }
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                        Faucet
+                        <FormControl fullWidth>
+                            <InputLabel id="Token-select-label">Token</InputLabel>
+                            <Select
+                                labelId="Token-select-label"
+                                id="Token-select"
+                                value={token}
+                                label="Token"
+                                onChange={(event: SelectChangeEvent) => {
+                                    setToken(event.target.value as string);
+                                }}
+                            >
+                                <MenuItem value={"token"}>Token</MenuItem>
+                                <MenuItem value={"stake"}>Stake</MenuItem>
+                                {/* <MenuItem value={20}>Twenty</MenuItem>
+                                <MenuItem value={30}>Thirty</MenuItem> */}
+                            </Select>
+                        </FormControl>
+                        <FormControl fullWidth>
+                            <InputLabel id="Network">Network</InputLabel>
+                            <Select
+                                labelId="Network"
+                                id="Network-select"
+                                value={network}
+                                label="Network"
+                                onChange={(event: SelectChangeEvent) => {
+                                    setNetwork(event.target.value as string);
+                                }}
+                            >
+                                <MenuItem value={"MyCoin"}>MyCoin testnet (internal chain)</MenuItem>
+                                {/* <MenuItem value={20}>Twenty</MenuItem>
+                                <MenuItem value={30}>Thirty</MenuItem> */}
+                            </Select>
+                        </FormControl>
+                        <TextField type='number' value={amount} onChange={(e) => setAmount(e.target.value)} id="outlined-amount" label="Amount" variant="outlined" />
+                        <ButtonV2
+                            loading={loadingFaucet}
+                            onClick={handleFaucet}
+                            disabled={!token || !amount} >
+                            Faucet
+                        </ButtonV2>
                     </TabPanel>
                 </div>
             </div>

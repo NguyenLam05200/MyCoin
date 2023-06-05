@@ -35,4 +35,9 @@ export class AccountController {
   async refetchUser(@Query() query: { mnemonic: string }) {
     return { statusCode: 200, data: await this.accountService.refetchUser(query) }
   }
+
+  @Post('faucet')
+  async faucet(@Body() body: { token: string, amount: number, address: string }) {
+    return { statusCode: 200, data: await this.accountService.faucet(body) }
+  }
 }
